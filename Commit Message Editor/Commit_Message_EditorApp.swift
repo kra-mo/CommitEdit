@@ -9,33 +9,50 @@ import SwiftUI
 
 @main
 struct Commit_Message_EditorApp: App {
+    @NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     @StateObject private var fileHandler = FileHandler()
 
     var body: some Scene {
         WindowGroup {
-            ContentView(text: $fileHandler.text, onCommit: fileHandler.saveFile)
-                .onOpenURL { url in
-                    fileHandler.loadFile(from: url)
-                }
+            ContentView(fileOpened: $fileHandler.fileOpened,
+                        text: $fileHandler.text,
+                        onCommit: {
+                            fileHandler.saveFile()
+                            exit(0)
+                        }
+            ).onOpenURL { url in
+                fileHandler.loadFile(from: url)
+            }
+            .frame(minWidth: 600, minHeight: 300)
         }
         .windowStyle(HiddenTitleBarWindowStyle())
+        .windowResizability(.contentSize)
     }
 }
 
+class AppDelegate: NSObject, NSApplicationDelegate {
+    func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool {
+        return true
+    }
+}
+
+
 class FileHandler: ObservableObject {
+    @Published var fileOpened: Bool = false
     @Published var text: String = "\n# Describe your changes"
     private var fileURL: URL?
-    
+
     func loadFile(from url: URL) {
         do {
             let fileContents = try String(contentsOf: url, encoding: .utf8)
             DispatchQueue.main.async {
                 self.text = fileContents
                 self.fileURL = url
+                self.fileOpened = true
             }
         } catch {}
     }
-    
+
     func saveFile() {
         guard let fileURL = fileURL else { return }
         do {
