@@ -23,7 +23,6 @@ struct CommitEditApp: App {
             ).onOpenURL { url in
                 fileHandler.loadFile(from: url)
             }
-            .frame(minWidth: 600, minHeight: 300)
         }
         .windowStyle(HiddenTitleBarWindowStyle())
         .windowResizability(.contentSize)

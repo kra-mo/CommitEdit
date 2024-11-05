@@ -36,10 +36,15 @@ struct ContentView: View {
                 Color.clear.background(.ultraThinMaterial)
                 ScrollView {
                     VStack {
-                        Text("Setting Up").font(.title).padding()
+                        if let appIcon = NSImage(named: NSImage.applicationIconName) {
+                            Image(nsImage: appIcon)
+                                .resizable()
+                                .frame(width: 150, height: 150)
+                                .shadow(color: Color.white.opacity(0.25), radius: 30)
+                        }
+                        Text("CommitEdit").font(.largeTitle).fontWeight(.bold).padding()
                         Text("Run the following in the Terminal:").font(.title2)
-                        Text(gitCommand).font(.system(.headline, design: .monospaced)).padding(5).background(Color.black).foregroundColor(Color.white).cornerRadius(5)
-                            .opacity(0.8)
+                        Text(gitCommand).font(.system(.headline, design: .monospaced)).padding(5).background(Color.black.opacity(0.6)).foregroundColor(Color.white).cornerRadius(5)
                         Button(
                             "Copy Command",
                             systemImage: "document.on.document",
@@ -51,7 +56,7 @@ struct ContentView: View {
                         Text("After that, commit messages should open for editing here.").padding()
                     }.padding()
                 }.defaultScrollAnchor(.center)
-            }
+            }.frame(minWidth: 600, minHeight: 450)
         }
     }
 }
