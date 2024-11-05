@@ -21,14 +21,14 @@ struct ContentView: View {
     var body: some View {
         if showWelcomeView {
             ZStack {
-                Color.clear.background(.ultraThinMaterial)
+                Color.clear.background(.ultraThickMaterial)
                 ScrollView {
                     VStack {
                         if let appIcon = NSImage(named: NSImage.applicationIconName) {
                             Image(nsImage: appIcon)
                                 .resizable()
                                 .frame(width: 150, height: 150)
-                                .shadow(color: Color.blue.opacity(0.3), radius: 30)
+                                .shadow(color: Color.blue.opacity(0.5), radius: 60)
                         }
                         Text("CommitEdit").font(.largeTitle).fontWeight(.bold).padding()
                         Text("Run the following in the Terminal:").font(.title2)
@@ -66,13 +66,14 @@ struct ContentView: View {
             .frame(minWidth: 600, minHeight: 440)
         } else {
             ZStack {
-                Color.primary.opacity(0.08).ignoresSafeArea(.all)
+                Color.clear.background(.ultraThickMaterial)
+                Color.primary.opacity(0.08)
                     .offset(
                         CGSize(
                             width: (" ".size(
                                 withAttributes: [
                                     .font: NSFont.monospacedSystemFont(
-                                        ofSize: NSFont.systemFontSize + 1,
+                                        ofSize: NSFont.systemFontSize,
                                         weight: .regular
                                     )
                                 ]
@@ -80,25 +81,27 @@ struct ContentView: View {
                             height: 0
                         )
                     )
-                TextEditor(text: $text)
-                    .font(
-                        .system(
-                            size: NSFont.systemFontSize + 1,
-                            weight: .regular,
-                            design: .monospaced
-                        )
-                    )
-                    .lineSpacing(3)
-                    .scrollContentBackground(.hidden)
-                    .padding(.horizontal, horizontalPadding)
                 VStack {
-                    Spacer()
+                    TextEditor(text: $text)
+                        .padding(.top, -10)
+                        .font(
+                            .system(
+                                size: NSFont.systemFontSize,
+                                weight: .regular,
+                                design: .monospaced
+                            )
+                        )
+                        .lineSpacing(3)
+                        .scrollContentBackground(.hidden)
+                        .padding(.horizontal, horizontalPadding)
                     HStack {
                         Spacer()
                         HStack {
                             Button("Cancel") {
                                 exit(0)
                             }
+                            .background(.background)
+                            .clipShape(RoundedRectangle(cornerRadius: 6))
                             Button(
                                 "Commit",
                                 systemImage: "point.topright.arrow.triangle.backward.to.point.bottomleft.scurvepath.fill",
@@ -106,16 +109,14 @@ struct ContentView: View {
                             )
                             .buttonStyle(.borderedProminent)
                             .labelStyle(.titleAndIcon)
+                            .keyboardShortcut("s")
                         }
-                        .padding(8)
-                        .background(.ultraThinMaterial)
-                        .clipShape(
-                            .rect(topLeadingRadius: 12)
-                        )
+                        .padding(.horizontal, 8)
+                        .padding(.bottom, 8)
                     }
                     .controlSize(.large)
                 }
-            }
+            }.ignoresSafeArea(.all)
         }
     }
 }
