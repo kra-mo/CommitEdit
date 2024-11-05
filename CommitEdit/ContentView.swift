@@ -40,7 +40,7 @@ struct ContentView: View {
                             Image(nsImage: appIcon)
                                 .resizable()
                                 .frame(width: 150, height: 150)
-                                .shadow(color: Color.white.opacity(0.25), radius: 30)
+                                .shadow(color: Color.blue.opacity(0.3), radius: 30)
                         }
                         Text("CommitEdit").font(.largeTitle).fontWeight(.bold).padding()
                         Text("Run the following in the Terminal:").font(.title2)
