@@ -25,7 +25,9 @@ struct CommitEditApp: App {
                 NSWindow.allowsAutomaticWindowTabbing = false
 
                 for window in NSApplication.shared.windows {
-                    window.standardWindowButton(.zoomButton)?.isEnabled = false
+                    window.standardWindowButton(.closeButton)?.isHidden = true
+                    window.standardWindowButton(.miniaturizeButton)?.isHidden = true
+                    window.standardWindowButton(.zoomButton)?.isHidden = true
                 }
 
                 // Start with the editor view and add a slight delay so the welcome view doesn't flash before a file is opened

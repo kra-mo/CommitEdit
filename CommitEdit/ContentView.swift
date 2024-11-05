@@ -12,9 +12,11 @@ struct ContentView: View {
     @Binding var text: String
     let onCommit: () -> Void
 
-    var gitCommand = "git config --global core.editor \"open -W -a 'CommitEdit'\""
-    var messageLength = 72.0
-    var horizontalPadding = 10.0
+    @State private var closeButtonOpacity = 0.5
+
+    let gitCommand = "git config --global core.editor \"open -W -a 'CommitEdit'\""
+    let messageLength = 72.0
+    let horizontalPadding = 10.0
 
     var body: some View {
         if showWelcomeView {
@@ -33,32 +35,51 @@ struct ContentView: View {
                         Text(gitCommand).font(.system(.headline, design: .monospaced)).padding(5).background(Color.black.opacity(0.6)).foregroundColor(Color.white).cornerRadius(5)
                         Button(
                             "Copy Command",
-                            systemImage: "document.on.document",
-                            action: {
-                                NSPasteboard.general.clearContents()
-                                NSPasteboard.general.setString(gitCommand, forType: .string)
-                            }
-                        ).controlSize(.large).padding()
+                            systemImage: "document.on.document"
+                        ) {
+                            NSPasteboard.general.clearContents()
+                            NSPasteboard.general.setString(gitCommand, forType: .string)
+                        }
+                        .controlSize(.large).padding()
                         Text("After that, commit messages should open for editing here.").padding()
                     }.padding()
                 }.defaultScrollAnchor(.center)
-            }.frame(minWidth: 600, minHeight: 450)
+                Button(
+                    "Close",
+                    systemImage: "xmark.circle.fill"
+                ) {
+                    exit(0)
+                }
+                .onHover(perform: {hover in
+                    withAnimation(.easeOut(duration: 0.2)) {
+                        closeButtonOpacity = hover ? 1.0 : 0.5
+                        }
+                    }
+                )
+                .font(.system(size: 13))
+                .opacity(closeButtonOpacity)
+                .buttonStyle(.borderless)
+                .labelStyle(.iconOnly)
+                .position(x: 17, y: 17)
+            }
+            .ignoresSafeArea()
+            .frame(minWidth: 600, minHeight: 440)
         } else {
             ZStack {
                 Color.primary.opacity(0.08).ignoresSafeArea(.all)
-                .offset(
-                    CGSize(
-                        width: (" ".size(
-                            withAttributes: [
-                                .font: NSFont.monospacedSystemFont(
-                                    ofSize: NSFont.systemFontSize + 1,
-                                    weight: .regular
-                                )
-                            ]
-                        ).width * (messageLength + 0.5)) + horizontalPadding,
-                        height: 0
+                    .offset(
+                        CGSize(
+                            width: (" ".size(
+                                withAttributes: [
+                                    .font: NSFont.monospacedSystemFont(
+                                        ofSize: NSFont.systemFontSize + 1,
+                                        weight: .regular
+                                    )
+                                ]
+                            ).width * (messageLength + 0.5)) + horizontalPadding,
+                            height: 0
+                        )
                     )
-                )
                 TextEditor(text: $text)
                     .font(
                         .system(
@@ -69,20 +90,31 @@ struct ContentView: View {
                     )
                     .lineSpacing(3)
                     .scrollContentBackground(.hidden)
-                    .toolbar {
-                        ToolbarItem() {
-                            Spacer()
-                        }
-                        ToolbarItem() {
+                    .padding(.horizontal, horizontalPadding)
+                VStack {
+                    Spacer()
+                    HStack {
+                        Spacer()
+                        HStack {
+                            Button("Cancel") {
+                                exit(0)
+                            }
                             Button(
                                 "Commit",
                                 systemImage: "point.topright.arrow.triangle.backward.to.point.bottomleft.scurvepath.fill",
                                 action: onCommit
                             )
+                            .buttonStyle(.borderedProminent)
                             .labelStyle(.titleAndIcon)
                         }
+                        .padding(8)
+                        .background(.ultraThinMaterial)
+                        .clipShape(
+                            .rect(topLeadingRadius: 12)
+                        )
                     }
-                    .padding(.horizontal, horizontalPadding)
+                    .controlSize(.large)
+                }
             }
         }
     }
@@ -90,7 +122,7 @@ struct ContentView: View {
 
 #Preview {
     @Previewable @State var text = ""
-    @Previewable @State var showWelcomeView = false
+    @Previewable @State var showWelcomeView = true
 
     ContentView(showWelcomeView: $showWelcomeView, text: $text, onCommit: {})
 }
