@@ -13,6 +13,8 @@ struct ContentView: View {
     let onCommit: () -> Void
 
     var gitCommand = "git config --global core.editor \"open -W -a 'CommitEdit'\""
+    var messageLength = 72.0
+    var horizontalPadding = 10.0
 
     var body: some View {
         if fileOpened {
@@ -20,14 +22,14 @@ struct ContentView: View {
                 Color.primary.opacity(0.08).ignoresSafeArea(.all)
                 .offset(
                     CGSize(
-                        width: " ".size(
+                        width: (" ".size(
                             withAttributes: [
                                 .font: NSFont.monospacedSystemFont(
                                     ofSize: NSFont.systemFontSize + 1,
                                     weight: .regular
                                 )
                             ]
-                        ).width * 72.5,
+                        ).width * (messageLength + 0.5)) + horizontalPadding,
                         height: 0
                     )
                 )
@@ -53,6 +55,7 @@ struct ContentView: View {
                             ).labelStyle(.titleAndIcon)
                         }
                     }
+                    .padding(.horizontal, horizontalPadding)
             }
         } else {
             ZStack {

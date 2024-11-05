@@ -20,22 +20,28 @@ struct CommitEditApp: App {
                             fileHandler.saveFile()
                             exit(0)
                         }
-            ).onOpenURL { url in
+            )
+            .onAppear {
+                NSWindow.allowsAutomaticWindowTabbing = false
+
+                for window in NSApplication.shared.windows {
+                    window.standardWindowButton(.zoomButton)?.isEnabled = false
+                }
+           }
+            .onOpenURL { url in
                 fileHandler.loadFile(from: url)
             }
+            .gesture(WindowDragGesture())
         }
         .windowStyle(HiddenTitleBarWindowStyle())
         .windowResizability(.contentSize)
+        .windowLevel(.floating)
     }
 }
 
 class AppDelegate: NSObject, NSApplicationDelegate {
     func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool {
         return true
-    }
-
-    func applicationWillFinishLaunching(_ notification: Notification) {
-            NSWindow.allowsAutomaticWindowTabbing = false
     }
 }
 
