@@ -12,6 +12,11 @@ struct CommitEditApp: App {
     @NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     @StateObject private var fileHandler = FileHandler()
 
+    init() {
+        UserDefaults.standard.set(false, forKey: "NSQuitAlwaysKeepsWindows")
+        NSWindow.allowsAutomaticWindowTabbing = false
+    }
+
     var body: some Scene {
         WindowGroup {
             ContentView(showWelcomeView: $fileHandler.showWelcomeView,
@@ -22,15 +27,14 @@ struct CommitEditApp: App {
                         }
             )
             .onAppear {
-                NSWindow.allowsAutomaticWindowTabbing = false
-
                 for window in NSApplication.shared.windows {
                     window.standardWindowButton(.closeButton)?.isHidden = true
                     window.standardWindowButton(.miniaturizeButton)?.isHidden = true
                     window.standardWindowButton(.zoomButton)?.isHidden = true
                 }
 
-                // Start with the editor view and add a slight delay so the welcome view doesn't flash before a file is opened
+                // Start with the editor view and add a slight delay
+                // so the welcome view doesn't flash before a file is opened
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
                     if !fileHandler.fileOpened {
                         fileHandler.showWelcomeView = true
@@ -45,6 +49,9 @@ struct CommitEditApp: App {
         .windowStyle(HiddenTitleBarWindowStyle())
         .windowResizability(.contentSize)
         .windowLevel(.floating)
+        .commands {
+            CommandGroup(replacing: .newItem, addition: { })
+        }
     }
 }
 
@@ -68,13 +75,13 @@ class FileHandler: ObservableObject {
         do {
             let fileContents = try String(contentsOf: url, encoding: .utf8)
             self.text = fileContents
-        } catch {}
+        } catch { }
     }
 
     func saveFile() {
         guard let fileURL = fileURL else { return }
         do {
             try text.write(to: fileURL, atomically: true, encoding: .utf8)
-        } catch {}
+        } catch { }
     }
 }
