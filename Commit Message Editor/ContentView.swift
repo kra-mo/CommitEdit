@@ -16,7 +16,7 @@ struct ContentView: View {
 
     var body: some View {
         if fileOpened {
-            TextEditor(text: $text).font(.system(.body, design: .monospaced))
+            TextEditor(text: $text).font(.system(.body, design: .monospaced)).lineSpacing(3)
                 .scrollContentBackground(.hidden)
                 .padding()
                 .toolbar {
@@ -58,7 +58,7 @@ struct ContentView: View {
 
 #Preview {
     @Previewable @State var text = "\n# Describe your changes"
-    @Previewable @State var fileOpened = false
+    @Previewable @State var fileOpened = true
 
     ContentView(fileOpened: $fileOpened, text: $text, onCommit: {})
 }
