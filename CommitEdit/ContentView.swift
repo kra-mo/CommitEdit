@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ContentView: View {
-    @Binding var fileOpened: Bool
+    @Binding var showWelcomeView: Bool
     @Binding var text: String
     let onCommit: () -> Void
 
@@ -17,7 +17,33 @@ struct ContentView: View {
     var horizontalPadding = 10.0
 
     var body: some View {
-        if fileOpened {
+        if showWelcomeView {
+            ZStack {
+                Color.clear.background(.ultraThinMaterial)
+                ScrollView {
+                    VStack {
+                        if let appIcon = NSImage(named: NSImage.applicationIconName) {
+                            Image(nsImage: appIcon)
+                                .resizable()
+                                .frame(width: 150, height: 150)
+                                .shadow(color: Color.blue.opacity(0.3), radius: 30)
+                        }
+                        Text("CommitEdit").font(.largeTitle).fontWeight(.bold).padding()
+                        Text("Run the following in the Terminal:").font(.title2)
+                        Text(gitCommand).font(.system(.headline, design: .monospaced)).padding(5).background(Color.black.opacity(0.6)).foregroundColor(Color.white).cornerRadius(5)
+                        Button(
+                            "Copy Command",
+                            systemImage: "document.on.document",
+                            action: {
+                                NSPasteboard.general.clearContents()
+                                NSPasteboard.general.setString(gitCommand, forType: .string)
+                            }
+                        ).controlSize(.large).padding()
+                        Text("After that, commit messages should open for editing here.").padding()
+                    }.padding()
+                }.defaultScrollAnchor(.center)
+            }.frame(minWidth: 600, minHeight: 450)
+        } else {
             ZStack {
                 Color.primary.opacity(0.08).ignoresSafeArea(.all)
                 .offset(
@@ -61,39 +87,13 @@ struct ContentView: View {
                     }
                     .padding(.horizontal, horizontalPadding)
             }
-        } else {
-            ZStack {
-                Color.clear.background(.ultraThinMaterial)
-                ScrollView {
-                    VStack {
-                        if let appIcon = NSImage(named: NSImage.applicationIconName) {
-                            Image(nsImage: appIcon)
-                                .resizable()
-                                .frame(width: 150, height: 150)
-                                .shadow(color: Color.blue.opacity(0.3), radius: 30)
-                        }
-                        Text("CommitEdit").font(.largeTitle).fontWeight(.bold).padding()
-                        Text("Run the following in the Terminal:").font(.title2)
-                        Text(gitCommand).font(.system(.headline, design: .monospaced)).padding(5).background(Color.black.opacity(0.6)).foregroundColor(Color.white).cornerRadius(5)
-                        Button(
-                            "Copy Command",
-                            systemImage: "document.on.document",
-                            action: {
-                                NSPasteboard.general.clearContents()
-                                NSPasteboard.general.setString(gitCommand, forType: .string)
-                            }
-                        ).controlSize(.large).padding()
-                        Text("After that, commit messages should open for editing here.").padding()
-                    }.padding()
-                }.defaultScrollAnchor(.center)
-            }.frame(minWidth: 600, minHeight: 450)
         }
     }
 }
 
 #Preview {
-    @Previewable @State var text = "\n# Describe your changes"
-    @Previewable @State var fileOpened = true
+    @Previewable @State var text = ""
+    @Previewable @State var showWelcomeView = false
 
-    ContentView(fileOpened: $fileOpened, text: $text, onCommit: {})
+    ContentView(showWelcomeView: $showWelcomeView, text: $text, onCommit: {})
 }

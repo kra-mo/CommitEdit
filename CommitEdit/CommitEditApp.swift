@@ -14,7 +14,7 @@ struct CommitEditApp: App {
 
     var body: some Scene {
         WindowGroup {
-            ContentView(fileOpened: $fileHandler.fileOpened,
+            ContentView(showWelcomeView: $fileHandler.showWelcomeView,
                         text: $fileHandler.text,
                         onCommit: {
                             fileHandler.saveFile()
@@ -26,6 +26,13 @@ struct CommitEditApp: App {
 
                 for window in NSApplication.shared.windows {
                     window.standardWindowButton(.zoomButton)?.isEnabled = false
+                }
+
+                // Start with the editor view and add a slight delay so the welcome view doesn't flash before a file is opened
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
+                    if !fileHandler.fileOpened {
+                        fileHandler.showWelcomeView = true
+                    }
                 }
             }
             .onOpenURL { url in
@@ -47,16 +54,18 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
 
 class FileHandler: ObservableObject {
+    @Published var showWelcomeView: Bool = false
     @Published var fileOpened: Bool = false
-    @Published var text: String = "\n# Describe your changes"
+    @Published var text: String = ""
     private var fileURL: URL?
 
     func loadFile(from url: URL) {
+        self.showWelcomeView = false
+        self.fileOpened = true
+        self.fileURL = url
         do {
             let fileContents = try String(contentsOf: url, encoding: .utf8)
             self.text = fileContents
-            self.fileURL = url
-            self.fileOpened = true
         } catch {}
     }
 
