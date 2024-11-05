@@ -80,9 +80,6 @@ struct ContentView: View {
                                 action: onCommit
                             )
                             .labelStyle(.titleAndIcon)
-                            .controlSize(.large)
-                            .buttonStyle(.borderless)
-                            .foregroundStyle(Color.accentColor)
                         }
                     }
                     .padding(.horizontal, horizontalPadding)
