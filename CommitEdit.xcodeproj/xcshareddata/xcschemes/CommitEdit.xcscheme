@@ -16,9 +16,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "CE2536982CD91E5F0045F679"
-               BuildableName = "Commit Message Editor.app"
-               BlueprintName = "Commit Message Editor"
-               ReferencedContainer = "container:Commit Message Editor.xcodeproj">
+               BuildableName = "CommitEdit.app"
+               BlueprintName = "CommitEdit"
+               ReferencedContainer = "container:CommitEdit.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -45,9 +45,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "CE2536982CD91E5F0045F679"
-            BuildableName = "Commit Message Editor.app"
-            BlueprintName = "Commit Message Editor"
-            ReferencedContainer = "container:Commit Message Editor.xcodeproj">
+            BuildableName = "CommitEdit.app"
+            BlueprintName = "CommitEdit"
+            ReferencedContainer = "container:CommitEdit.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -62,9 +62,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "CE2536982CD91E5F0045F679"
-            BuildableName = "Commit Message Editor.app"
-            BlueprintName = "Commit Message Editor"
-            ReferencedContainer = "container:Commit Message Editor.xcodeproj">
+            BuildableName = "CommitEdit.app"
+            BlueprintName = "CommitEdit"
+            ReferencedContainer = "container:CommitEdit.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

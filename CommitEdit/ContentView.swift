@@ -1,6 +1,6 @@
 //
 //  ContentView.swift
-//  Commit Message Editor
+//  CommitEdit
 //
 //  Created by kramo on 04-11-2024.
 //
@@ -12,7 +12,7 @@ struct ContentView: View {
     @Binding var text: String
     let onCommit: () -> Void
     
-    var gitCommand = "git config --global core.editor \"open -W -a 'Commit Message Editor'\""
+    var gitCommand = "git config --global core.editor \"open -W -a 'CommitEdit'\""
 
     var body: some View {
         if fileOpened {

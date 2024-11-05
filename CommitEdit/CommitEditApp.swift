@@ -1,6 +1,6 @@
 //
-//  Commit_Message_EditorApp.swift
-//  Commit Message Editor
+//  CommitEditApp.swift
+//  CommitEdit
 //
 //  Created by kramo on 04-11-2024.
 //
@@ -8,7 +8,7 @@
 import SwiftUI
 
 @main
-struct Commit_Message_EditorApp: App {
+struct CommitEditApp: App {
     @NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     @StateObject private var fileHandler = FileHandler()
 
