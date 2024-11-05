@@ -27,7 +27,7 @@ struct CommitEditApp: App {
                 for window in NSApplication.shared.windows {
                     window.standardWindowButton(.zoomButton)?.isEnabled = false
                 }
-           }
+            }
             .onOpenURL { url in
                 fileHandler.loadFile(from: url)
             }
@@ -54,11 +54,9 @@ class FileHandler: ObservableObject {
     func loadFile(from url: URL) {
         do {
             let fileContents = try String(contentsOf: url, encoding: .utf8)
-            DispatchQueue.main.async {
-                self.text = fileContents
-                self.fileURL = url
-                self.fileOpened = true
-            }
+            self.text = fileContents
+            self.fileURL = url
+            self.fileOpened = true
         } catch {}
     }
 

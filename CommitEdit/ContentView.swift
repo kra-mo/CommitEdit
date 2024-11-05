@@ -52,7 +52,11 @@ struct ContentView: View {
                                 "Commit",
                                 systemImage: "point.topright.arrow.triangle.backward.to.point.bottomleft.scurvepath.fill",
                                 action: onCommit
-                            ).labelStyle(.titleAndIcon)
+                            )
+                            .labelStyle(.titleAndIcon)
+                            .controlSize(.large)
+                            .buttonStyle(.borderless)
+                            .foregroundStyle(Color.accentColor)
                         }
                     }
                     .padding(.horizontal, horizontalPadding)
