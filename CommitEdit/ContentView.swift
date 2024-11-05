@@ -11,26 +11,49 @@ struct ContentView: View {
     @Binding var fileOpened: Bool
     @Binding var text: String
     let onCommit: () -> Void
-    
+
     var gitCommand = "git config --global core.editor \"open -W -a 'CommitEdit'\""
 
     var body: some View {
         if fileOpened {
-            TextEditor(text: $text).font(.system(.body, design: .monospaced)).lineSpacing(3)
-                .scrollContentBackground(.hidden)
-                .padding()
-                .toolbar {
-                    ToolbarItem() {
-                        Spacer()
+            ZStack {
+                Color.primary.opacity(0.08).ignoresSafeArea(.all)
+                .offset(
+                    CGSize(
+                        width: " ".size(
+                            withAttributes: [
+                                .font: NSFont.monospacedSystemFont(
+                                    ofSize: NSFont.systemFontSize + 1,
+                                    weight: .regular
+                                )
+                            ]
+                        ).width * 72.5,
+                        height: 0
+                    )
+                )
+                TextEditor(text: $text)
+                    .font(
+                        .system(
+                            size: NSFont.systemFontSize + 1,
+                            weight: .regular,
+                            design: .monospaced
+                        )
+                    )
+                    .lineSpacing(3)
+                    .scrollContentBackground(.hidden)
+                    .toolbar {
+                        ToolbarItem() {
+                            Spacer()
+                        }
+                        ToolbarItem() {
+                            Button(
+                                "Commit",
+                                systemImage: "point.topright.arrow.triangle.backward.to.point.bottomleft.scurvepath.fill",
+                                action: onCommit
+                            ).labelStyle(.titleAndIcon)
+                        }
                     }
-                    ToolbarItem() {
-                        Button(
-                            "Commit",
-                            systemImage: "point.topright.arrow.triangle.backward.to.point.bottomleft.scurvepath.fill",
-                            action: onCommit
-                        ).labelStyle(.titleAndIcon)
-                    }
-                }
+            }
         } else {
             ZStack {
                 Color.clear.background(.ultraThinMaterial)
