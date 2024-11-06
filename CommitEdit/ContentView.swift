@@ -16,7 +16,7 @@ struct ContentView: View {
 
     let gitCommand = "git config --global core.editor \"open -W -a 'CommitEdit'\""
     let messageLength = 72.0
-    let leadingPadding = 20.0
+    let horizontalPadding = 20.0
     let fontSize = NSFont.systemFontSize + 1
 
     var body: some View {
@@ -87,7 +87,7 @@ struct ContentView: View {
                                         weight: .regular
                                     )
                                 ]
-                            ).width * (messageLength + 0.5)) + leadingPadding,
+                            ).width * (messageLength + 0.5)) + horizontalPadding,
                             height: 0
                         )
                     )
@@ -104,7 +104,7 @@ struct ContentView: View {
                         .foregroundStyle(.foreground.opacity(0.85))
                         .lineSpacing(3)
                         .scrollContentBackground(.hidden)
-                        .padding(.leading, leadingPadding)
+                        .padding(.horizontal, horizontalPadding)
                     HStack {
                         Spacer()
                         HStack {
