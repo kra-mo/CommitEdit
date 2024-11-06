@@ -16,7 +16,8 @@ struct ContentView: View {
 
     let gitCommand = "git config --global core.editor \"open -W -a 'CommitEdit'\""
     let messageLength = 72.0
-    let horizontalPadding = 10.0
+    let leadingPadding = 20.0
+    let fontSize = NSFont.systemFontSize + 1
 
     var body: some View {
         if showWelcomeView {
@@ -30,9 +31,16 @@ struct ContentView: View {
                                 .frame(width: 150, height: 150)
                                 .shadow(color: Color.blue.opacity(0.5), radius: 60)
                         }
-                        Text("CommitEdit").font(.largeTitle).fontWeight(.bold).padding()
-                        Text("Run the following in the Terminal:").font(.title2)
-                        Text(gitCommand).font(.system(.headline, design: .monospaced)).padding(5).background(Color.black.opacity(0.6)).foregroundColor(Color.white).cornerRadius(5)
+                        Text("CommitEdit").font(.largeTitle)
+                            .fontWeight(.bold).padding()
+                        Text("Run the following in the Terminal:")
+                            .font(.title2)
+                        Text(gitCommand)
+                            .font(.system(.headline, design: .monospaced))
+                            .padding(5)
+                            .background(Color.black.opacity(0.6))
+                            .foregroundColor(Color.white)
+                            .cornerRadius(5)
                         Button(
                             "Copy Command",
                             systemImage: "document.on.document"
@@ -40,8 +48,10 @@ struct ContentView: View {
                             NSPasteboard.general.clearContents()
                             NSPasteboard.general.setString(gitCommand, forType: .string)
                         }
-                        .controlSize(.large).padding()
-                        Text("After that, commit messages should open for editing here.").padding()
+                        .controlSize(.large)
+                        .padding()
+                        Text("After that, commit messages should open for editing here.")
+                            .padding()
                     }.padding()
                 }.defaultScrollAnchor(.center)
                 Button(
@@ -63,7 +73,7 @@ struct ContentView: View {
                 .position(x: 17, y: 17)
             }
             .ignoresSafeArea()
-            .frame(minWidth: 600, minHeight: 440)
+            .frame(minWidth: 540, minHeight: 440)
         } else {
             ZStack {
                 Color.clear.background(.ultraThickMaterial)
@@ -73,27 +83,28 @@ struct ContentView: View {
                             width: (" ".size(
                                 withAttributes: [
                                     .font: NSFont.monospacedSystemFont(
-                                        ofSize: NSFont.systemFontSize,
+                                        ofSize: fontSize,
                                         weight: .regular
                                     )
                                 ]
-                            ).width * (messageLength + 0.5)) + horizontalPadding,
+                            ).width * (messageLength + 0.5)) + leadingPadding,
                             height: 0
                         )
                     )
                 VStack {
                     TextEditor(text: $text)
-                        .padding(.top, -10)
+                        .padding(.top, -5)
                         .font(
                             .system(
-                                size: NSFont.systemFontSize,
+                                size: fontSize,
                                 weight: .regular,
                                 design: .monospaced
                             )
                         )
+                        .foregroundStyle(.foreground.opacity(0.85))
                         .lineSpacing(3)
                         .scrollContentBackground(.hidden)
-                        .padding(.horizontal, horizontalPadding)
+                        .padding(.leading, leadingPadding)
                     HStack {
                         Spacer()
                         HStack {
@@ -104,12 +115,15 @@ struct ContentView: View {
                             .clipShape(RoundedRectangle(cornerRadius: 6))
                             Button(
                                 "Commit",
-                                systemImage: "point.topright.arrow.triangle.backward.to.point.bottomleft.scurvepath.fill",
+                                systemImage:
+                                    "point.topright.arrow.triangle.backward.to.point.bottomleft.scurvepath.fill",
                                 action: onCommit
                             )
+                            .keyboardShortcut("s")
                             .buttonStyle(.borderedProminent)
                             .labelStyle(.titleAndIcon)
-                            .keyboardShortcut("s")
+                            .background(.background)
+                            .clipShape(RoundedRectangle(cornerRadius: 6))
                         }
                         .padding(.horizontal, 8)
                         .padding(.bottom, 8)
