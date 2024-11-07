@@ -5,7 +5,7 @@
 
   A native macOS commit message editor
 
-  <img src="Screenshot.png" />
+  <img src="Screenshot.webp" />
 </div>
 
 ## Acknowledgements
