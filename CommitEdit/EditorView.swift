@@ -52,8 +52,11 @@ struct EditorView: View {
                         Button("Cancel") {
                             exit(0)
                         }
-                        .background(.background)
-                        .clipShape(RoundedRectangle(cornerRadius: 6))
+                        .background(
+                            Color.clear.background(
+                                .ultraThickMaterial
+                            ).clipShape(RoundedRectangle(cornerRadius: 6))
+                        )
                         Button(
                             "Commit",
                             systemImage:
@@ -63,8 +66,11 @@ struct EditorView: View {
                         .keyboardShortcut("s")
                         .buttonStyle(.borderedProminent)
                         .labelStyle(.titleAndIcon)
-                        .background(.background)
-                        .clipShape(RoundedRectangle(cornerRadius: 6))
+                        .background(
+                            Color.clear.background(
+                                .ultraThickMaterial
+                            ).clipShape(RoundedRectangle(cornerRadius: 6))
+                        )
                     }
                     .padding(.horizontal, 8)
                     .padding(.bottom, 8)
