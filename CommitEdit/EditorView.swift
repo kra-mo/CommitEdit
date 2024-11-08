@@ -49,8 +49,9 @@ struct EditorView: View {
                 HStack {
                     Spacer()
                     HStack {
-                        Button("Cancel") {
-                            exit(0)
+                        Button("Abort") {
+                            text = ""
+                            onCommit()
                         }
                         .background(
                             Color.clear.background(
