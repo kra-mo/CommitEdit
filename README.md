@@ -8,6 +8,14 @@
   <img src="Screenshot.webp" />
 </div>
 
+## Installation
+
+Download the latest release from [Releases](https://github.com/kra-mo/CommitEdit/releases/latest) and move it into your Applications folder.
+
+The app is not signed as I have not been able to pay the $99 fee for a developer license. As such, you will need to go to System Settings → Privacy & Security → Security and open the app from there.
+
+If you would like to be able to install/update the app more conveniently, such as from the Mac App Store or Homebrew, please consider donating!
+
 ## Donations
 
 CommitEdit is a free app that I develop in my free time. If you want to support me or want the app available in the App Store, please consider donating! I accept donations through [GitHub Sponsors](https://github.com/sponsors/kra-mo) and [Liberapay](https://liberapay.com/kramo).
