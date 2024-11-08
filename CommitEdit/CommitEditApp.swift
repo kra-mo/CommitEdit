@@ -13,7 +13,6 @@ struct CommitEditApp: App {
     @StateObject private var fileHandler = FileHandler()
 
     init() {
-        UserDefaults.standard.set(false, forKey: "NSQuitAlwaysKeepsWindows")
         NSWindow.allowsAutomaticWindowTabbing = false
     }
 
@@ -49,6 +48,7 @@ struct CommitEditApp: App {
         .windowStyle(HiddenTitleBarWindowStyle())
         .windowResizability(.contentSize)
         .windowLevel(.floating)
+        .restorationBehavior(.disabled)
         .commands {
             CommandGroup(replacing: .newItem, addition: { })
         }

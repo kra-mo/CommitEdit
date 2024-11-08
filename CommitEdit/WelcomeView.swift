@@ -63,7 +63,7 @@ struct WelcomeView: View {
             .labelStyle(.iconOnly)
             .position(x: 17, y: 17)
         }
-        .background(VisualEffectView())
+        .containerBackground(.ultraThickMaterial, for: .window)
         .ignoresSafeArea()
         .frame(minWidth: 540, minHeight: 440)
     }

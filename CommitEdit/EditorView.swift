@@ -53,11 +53,6 @@ struct EditorView: View {
                             text = ""
                             onCommit()
                         }
-                        .background(
-                            Color.clear.background(
-                                .ultraThickMaterial
-                            ).clipShape(RoundedRectangle(cornerRadius: 6))
-                        )
                         Button(
                             "Commit",
                             systemImage:
@@ -67,11 +62,6 @@ struct EditorView: View {
                         .keyboardShortcut("s")
                         .buttonStyle(.borderedProminent)
                         .labelStyle(.titleAndIcon)
-                        .background(
-                            Color.clear.background(
-                                .ultraThickMaterial
-                            ).clipShape(RoundedRectangle(cornerRadius: 6))
-                        )
                     }
                     .padding(.horizontal, 8)
                     .padding(.bottom, 8)
@@ -79,7 +69,7 @@ struct EditorView: View {
                 .controlSize(.large)
             }
         }
-        .background(VisualEffectView())
+        .containerBackground(.ultraThickMaterial, for: .window)
         .ignoresSafeArea(.all)
     }
 }
