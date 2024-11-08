@@ -8,7 +8,10 @@
 import SwiftUI
 
 struct WelcomeView: View {
+    @Environment(\.openURL) private var openURL
+
     @State private var closeButtonOpacity = 0.5
+    @State private var donateAlertPresented = false
 
     let gitCommand = "git config --global core.editor \"open -W -a 'CommitEdit'\""
 
@@ -29,7 +32,7 @@ struct WelcomeView: View {
                     Text(gitCommand)
                         .font(.system(.headline, design: .monospaced))
                         .padding(5)
-                        .background(Color.black.opacity(0.6))
+                        .background(Color.black.opacity(0.5))
                         .foregroundColor(Color.white)
                         .cornerRadius(5)
                     Button(
@@ -44,7 +47,20 @@ struct WelcomeView: View {
                     Text("After that, commit messages should open for editing here.")
                         .padding()
                 }.padding()
-            }.defaultScrollAnchor(.center)
+            }
+            .defaultScrollAnchor(.center)
+            .toolbar {
+                ToolbarItem {
+                    Spacer()
+                }
+                ToolbarItem {
+                    Button("Donate", systemImage: "heart.fill")
+                    {
+                        donateAlertPresented = true
+                    }
+                    .labelStyle(.titleAndIcon)
+                }
+            }
             Button(
                 "Close",
                 systemImage: "xmark.circle.fill"
@@ -54,8 +70,8 @@ struct WelcomeView: View {
             .onHover(perform: {hover in
                 withAnimation(.easeOut(duration: 0.2)) {
                     closeButtonOpacity = hover ? 1.0 : 0.5
-                    }
                 }
+            }
             )
             .font(.system(size: 13))
             .opacity(closeButtonOpacity)
@@ -66,6 +82,21 @@ struct WelcomeView: View {
         .containerBackground(.ultraThickMaterial, for: .window)
         .ignoresSafeArea()
         .frame(minWidth: 540, minHeight: 440)
+        .alert(isPresented: $donateAlertPresented) {
+            Alert(
+                title: Text("Support CommitEdit"),
+                message: Text("CommitEdit is a free and open source app that relies on donations. Please consider chipping in!"),
+                primaryButton: .default(
+                    Text("Donate"),
+                    action: {
+                        openURL(URL(
+                            string: "https://github.com/kra-mo/CommitEdit#donations"
+                        )!)
+                    }
+                ),
+                secondaryButton: .cancel()
+            )
+        }
     }
 }
 

@@ -11,7 +11,7 @@ struct ContentView: View {
     @Binding var showWelcomeView: Bool
     @Binding var text: String
     let onCommit: () -> Void
-
+    
     var body: some View {
         if showWelcomeView {
             WelcomeView()
@@ -24,6 +24,6 @@ struct ContentView: View {
 #Preview {
     @Previewable @State var text = ""
     @Previewable @State var showWelcomeView = true
-
+    
     ContentView(showWelcomeView: $showWelcomeView, text: $text, onCommit: {})
 }

@@ -15,15 +15,15 @@ struct CommitEditApp: App {
     init() {
         NSWindow.allowsAutomaticWindowTabbing = false
     }
-
+    
     var body: some Scene {
         WindowGroup {
             ContentView(showWelcomeView: $fileHandler.showWelcomeView,
                         text: $fileHandler.text,
                         onCommit: {
-                            fileHandler.saveFile()
-                            exit(0)
-                        }
+                fileHandler.saveFile()
+                exit(0)
+            }
             )
             .onAppear {
                 for window in NSApplication.shared.windows {

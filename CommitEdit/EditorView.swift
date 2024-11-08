@@ -11,11 +11,11 @@ import SwiftUI
 struct EditorView: View {
     @Binding var text: String
     let onCommit: () -> Void
-
+    
     let messageLength = 72.0
     let horizontalPadding = 20.0
     let fontSize = NSFont.systemFontSize + 1
-
+    
     var body: some View {
         ZStack {
             Color.primary.opacity(0.08)
@@ -76,6 +76,6 @@ struct EditorView: View {
 
 #Preview {
     @Previewable @State var text = ""
-
+    
     EditorView(text: $text, onCommit: {})
 }
