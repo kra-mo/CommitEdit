@@ -11,11 +11,11 @@ import SwiftUI
 struct EditorView: View {
     @Binding var text: String
     let onCommit: () -> Void
-    
+
     let messageLength = 72.0
     let horizontalPadding = 20.0
     let fontSize = NSFont.systemFontSize + 1
-    
+
     var body: some View {
         ZStack {
             Color.primary.opacity(0.08)
@@ -46,6 +46,9 @@ struct EditorView: View {
                     .lineSpacing(3)
                     .scrollContentBackground(.hidden)
                     .padding(.horizontal, horizontalPadding)
+                    .onSubmit {
+                        onCommit()
+                    }
                 HStack {
                     Spacer()
                     HStack {
@@ -60,6 +63,7 @@ struct EditorView: View {
                             action: onCommit
                         )
                         .keyboardShortcut("s")
+                        .keyboardShortcut(.init("⏎"), modifiers: [.command])
                         .buttonStyle(.borderedProminent)
                         .labelStyle(.titleAndIcon)
                     }
@@ -76,6 +80,6 @@ struct EditorView: View {
 
 #Preview {
     @Previewable @State var text = ""
-    
+
     EditorView(text: $text, onCommit: {})
 }
