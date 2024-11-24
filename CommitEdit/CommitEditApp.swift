@@ -12,18 +12,31 @@ struct CommitEditApp: App {
     @NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     @StateObject private var fileHandler = FileHandler()
 
+    func onCommit() {
+        if fileHandler.showWelcomeView { return }
+
+        fileHandler.saveFile()
+        exit(0)
+    }
+
+    func onAbort() {
+        if fileHandler.showWelcomeView { return }
+
+        fileHandler.text = ""
+        onCommit()
+    }
+
     init() {
         NSWindow.allowsAutomaticWindowTabbing = false
     }
-    
+
     var body: some Scene {
         WindowGroup {
-            ContentView(showWelcomeView: $fileHandler.showWelcomeView,
-                        text: $fileHandler.text,
-                        onCommit: {
-                fileHandler.saveFile()
-                exit(0)
-            }
+            ContentView(
+                showWelcomeView: $fileHandler.showWelcomeView,
+                text: $fileHandler.text,
+                onCommit: onCommit,
+                onAbort: onAbort
             )
             .onAppear {
                 for window in NSApplication.shared.windows {
@@ -51,6 +64,13 @@ struct CommitEditApp: App {
         .restorationBehavior(.disabled)
         .commands {
             CommandGroup(replacing: .newItem, addition: { })
+            CommandGroup(before: .undoRedo) {
+                Button("Commit", action: onCommit)
+                    .keyboardShortcut(.return)
+                Button("Abort", action: onAbort)
+                    .keyboardShortcut(".")
+                Divider()
+            }
         }
     }
 }

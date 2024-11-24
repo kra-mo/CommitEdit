@@ -87,7 +87,7 @@ struct WelcomeView: View {
                 title: Text("Support CommitEdit"),
                 message: Text("CommitEdit is a free and open source app that relies on donations. Please consider chipping in!"),
                 primaryButton: .default(
-                    Text("Donate"),
+                    Text("View Options"),
                     action: {
                         openURL(URL(
                             string: "https://github.com/kra-mo/CommitEdit#donations"

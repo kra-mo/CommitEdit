@@ -11,6 +11,7 @@ import SwiftUI
 struct EditorView: View {
     @Binding var text: String
     let onCommit: () -> Void
+    let onAbort: () -> Void
 
     @State private var tooLong: Bool = false
     @State private var showLengthTip: Bool = false
@@ -82,10 +83,7 @@ struct EditorView: View {
                     }
                     Spacer()
                     HStack {
-                        Button("Abort") {
-                            text = ""
-                            onCommit()
-                        }
+                        Button("Abort", action: onAbort)
                         Button(
                             "Commit",
                             systemImage:
@@ -111,5 +109,5 @@ struct EditorView: View {
 #Preview {
     @Previewable @State var text = ""
 
-    EditorView(text: $text, onCommit: {})
+    EditorView(text: $text, onCommit: {}, onAbort: {})
 }

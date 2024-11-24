@@ -11,12 +11,17 @@ struct ContentView: View {
     @Binding var showWelcomeView: Bool
     @Binding var text: String
     let onCommit: () -> Void
-    
+    let onAbort: () -> Void
+
     var body: some View {
         if showWelcomeView {
             WelcomeView()
         } else {
-            EditorView(text: $text, onCommit: onCommit)
+            EditorView(
+                text: $text,
+                onCommit: onCommit,
+                onAbort: onAbort
+            )
         }
     }
 }
@@ -25,5 +30,10 @@ struct ContentView: View {
     @Previewable @State var text = ""
     @Previewable @State var showWelcomeView = true
     
-    ContentView(showWelcomeView: $showWelcomeView, text: $text, onCommit: {})
+    ContentView(
+        showWelcomeView: $showWelcomeView,
+        text: $text,
+        onCommit: {},
+        onAbort: {}
+    )
 }
