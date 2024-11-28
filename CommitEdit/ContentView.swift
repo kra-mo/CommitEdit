@@ -14,15 +14,20 @@ struct ContentView: View {
     let onAbort: () -> Void
 
     var body: some View {
-        if showWelcomeView {
-            WelcomeView()
-        } else {
-            EditorView(
-                text: $text,
-                onCommit: onCommit,
-                onAbort: onAbort
-            )
-        }
+        VStack {
+            if showWelcomeView {
+                WelcomeView()
+            } else {
+                EditorView(
+                    text: $text,
+                    onCommit: onCommit,
+                    onAbort: onAbort
+                )
+            }
+        }.animation(
+            .easeOut(duration: 0.2),
+            value: showWelcomeView
+        )
     }
 }
 
