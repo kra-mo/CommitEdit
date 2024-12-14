@@ -8,6 +8,8 @@
 
 import SwiftUI
 
+import HighlightedTextEditor
+
 struct EditorView: View {
     @Binding var text: String
     let onCommit: () -> Void
@@ -16,15 +18,85 @@ struct EditorView: View {
     @State private var tooLong: Bool = false
     @State private var showLengthTip: Bool = false
 
-    let messageLength = 50.0
-    let descLength = 72.0
-    let horizontalPadding = 20.0
-    let fontSize = NSFont.systemFontSize + 1
+    private let messageLength = 50.0
+    private let descLength = 72.0
+    private let horizontalPadding = 20.0
+    private let fontSize = NSFont.systemFontSize + 1
+
+    static private let scissors = "# ------------------------ >8 ------------------------"
+    static private let scissorsPattern = NSRegularExpression.escapedPattern(for: scissors)
+    private let rules: [HighlightRule] = [
+            HighlightRule(
+                pattern: try! NSRegularExpression(
+                    pattern: #".*"#
+                ),
+                formattingRules: [
+                    TextFormattingRule(fontTraits: [.monoSpace]),
+            ]),
+            HighlightRule(
+                pattern: try! NSRegularExpression(
+                    pattern: #"^#.*"#,
+                    options: [.anchorsMatchLines]
+                ),
+                formattingRules: [
+                    TextFormattingRule(
+                        key: .foregroundColor,
+                        value: NSColor.secondaryLabelColor
+                    ),
+            ]),
+            HighlightRule(
+                pattern: try! NSRegularExpression(
+                    pattern: "(?<=\(scissorsPattern)\\n).*",
+                    options: [.dotMatchesLineSeparators]
+                ),
+                formattingRules: [
+                    TextFormattingRule(
+                        key: .foregroundColor,
+                        value: NSColor.secondaryLabelColor
+                    ),
+            ]),
+            HighlightRule(
+                pattern: try! NSRegularExpression(
+                    pattern: #"^(?!\+{3}).*^\+(.*)"#,
+                    options: [.anchorsMatchLines]
+                ),
+                formattingRules: [
+                    TextFormattingRule(
+                        key: .foregroundColor,
+                        value: NSColor.systemGreen
+                    ),
+            ]),
+            HighlightRule(
+                pattern: try! NSRegularExpression(
+                    pattern: #"^(?!\-{3}).*^\-(.*)"#,
+                    options: [.anchorsMatchLines]
+                ),
+                formattingRules: [
+                    TextFormattingRule(
+                        key: .foregroundColor,
+                        value: NSColor.systemRed
+                    ),
+            ]),
+            HighlightRule(
+                pattern: try! NSRegularExpression(
+                    pattern: #"^@@.*@@"#,
+                    options: [.anchorsMatchLines]
+                ),
+                formattingRules: [
+                    TextFormattingRule(fontTraits: [.italic]),
+                    TextFormattingRule(
+                        key: .foregroundColor,
+                        value: NSColor.systemBlue
+                    )
+            ]),
+        ]
 
     private func currentMessageLength() -> Int {
-        if let message = text.split(separator: "\n").first(where: {
-            !$0.trimmingCharacters(in: .whitespaces).hasPrefix("#")
-        }) { return message.count } else { return 0 }
+        if let message = text.split(separator: "\n")
+            .prefix(while: { $0.trimmingCharacters(in: .whitespaces) != EditorView.scissors })
+            .first(where: {!$0.trimmingCharacters(in: .whitespaces).hasPrefix("#")}) {
+            return message.count
+        } else { return 0 }
     }
 
     var body: some View {
@@ -44,18 +116,14 @@ struct EditorView: View {
                     )
                 )
             VStack {
-                TextEditor(text: $text)
+                HighlightedTextEditor(text: $text, highlightRules: rules)
+                    .introspect { editor in
+                        DispatchQueue.main.async {
+                            editor.textView.drawsBackground = false
+                            editor.textView.enclosingScrollView?.drawsBackground = false
+                        }
+                    }
                     .padding(.top, -5)
-                    .font(
-                        .system(
-                            size: fontSize,
-                            weight: .regular,
-                            design: .monospaced
-                        )
-                    )
-                    .foregroundStyle(.foreground.opacity(0.9))
-                    .lineSpacing(3)
-                    .scrollContentBackground(.hidden)
                     .padding(.horizontal, horizontalPadding)
                     .onChange(of: text, {
                         withAnimation {

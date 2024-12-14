@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		CED0429B2D0DBC8800087812 /* HighlightedTextEditor in Frameworks */ = {isa = PBXBuildFile; productRef = CED0429A2D0DBC8800087812 /* HighlightedTextEditor */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		CE2536992CD91E5F0045F679 /* CommitEdit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CommitEdit.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -23,6 +27,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CED0429B2D0DBC8800087812 /* HighlightedTextEditor in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -65,6 +70,7 @@
 			);
 			name = CommitEdit;
 			packageProductDependencies = (
+				CED0429A2D0DBC8800087812 /* HighlightedTextEditor */,
 			);
 			productName = CommitEdit;
 			productReference = CE2536992CD91E5F0045F679 /* CommitEdit.app */;
@@ -94,6 +100,9 @@
 			);
 			mainGroup = CE2536902CD91E5F0045F679;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				CED042992D0DBC8800087812 /* XCRemoteSwiftPackageReference "HighlightedTextEditor" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = CE25369A2CD91E5F0045F679 /* Products */;
 			projectDirPath = "";
@@ -325,6 +334,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		CED042992D0DBC8800087812 /* XCRemoteSwiftPackageReference "HighlightedTextEditor" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/kyle-n/HighlightedTextEditor";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.1.2;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		CED0429A2D0DBC8800087812 /* HighlightedTextEditor */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CED042992D0DBC8800087812 /* XCRemoteSwiftPackageReference "HighlightedTextEditor" */;
+			productName = HighlightedTextEditor;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = CE2536912CD91E5F0045F679 /* Project object */;
 }
