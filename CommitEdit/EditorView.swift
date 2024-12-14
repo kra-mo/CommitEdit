@@ -21,8 +21,11 @@ struct EditorView: View {
     private let messageLength = 50.0
     private let descLength = 72.0
     private let horizontalPadding = 20.0
-    private let fontSize = NSFont.systemFontSize + 1
     static private let scissors = "# ------------------------ >8 ------------------------"
+    static private let font = NSFont.monospacedSystemFont(
+        ofSize: NSFont.systemFontSize + 1,
+        weight: .regular
+    )
 
     private let rules: [HighlightRule] = [
             HighlightRule(
@@ -30,7 +33,7 @@ struct EditorView: View {
                     pattern: #".*"#
                 ),
                 formattingRules: [
-                    TextFormattingRule(fontTraits: [.monoSpace]),
+                    TextFormattingRule(key: .font, value: font),
             ]),
             HighlightRule(
                 pattern: try! NSRegularExpression(
@@ -93,12 +96,7 @@ struct EditorView: View {
                 .offset(
                     CGSize(
                         width: (" ".size(
-                            withAttributes: [
-                                .font: NSFont.monospacedSystemFont(
-                                    ofSize: fontSize,
-                                    weight: .regular
-                                )
-                            ]
+                            withAttributes: [.font: EditorView.font]
                         ).width * (descLength + 0.5)) + horizontalPadding,
                         height: 0
                     )
