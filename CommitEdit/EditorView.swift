@@ -22,9 +22,8 @@ struct EditorView: View {
     private let descLength = 72.0
     private let horizontalPadding = 20.0
     private let fontSize = NSFont.systemFontSize + 1
-
     static private let scissors = "# ------------------------ >8 ------------------------"
-    static private let scissorsPattern = NSRegularExpression.escapedPattern(for: scissors)
+
     private let rules: [HighlightRule] = [
             HighlightRule(
                 pattern: try! NSRegularExpression(
@@ -46,35 +45,24 @@ struct EditorView: View {
             ]),
             HighlightRule(
                 pattern: try! NSRegularExpression(
-                    pattern: "(?<=\(scissorsPattern)\\n).*",
-                    options: [.dotMatchesLineSeparators]
-                ),
-                formattingRules: [
-                    TextFormattingRule(
-                        key: .foregroundColor,
-                        value: NSColor.secondaryLabelColor
-                    ),
-            ]),
-            HighlightRule(
-                pattern: try! NSRegularExpression(
-                    pattern: #"^(?!\+{3}).*^\+(.*)"#,
+                    pattern: #"^\+(.*)"#,
                     options: [.anchorsMatchLines]
                 ),
                 formattingRules: [
                     TextFormattingRule(
-                        key: .foregroundColor,
-                        value: NSColor.systemGreen
+                        key: .backgroundColor,
+                        value: NSColor.systemGreen.withAlphaComponent(0.1)
                     ),
             ]),
             HighlightRule(
                 pattern: try! NSRegularExpression(
-                    pattern: #"^(?!\-{3}).*^\-(.*)"#,
+                    pattern: #"^\-(.*)"#,
                     options: [.anchorsMatchLines]
                 ),
                 formattingRules: [
                     TextFormattingRule(
-                        key: .foregroundColor,
-                        value: NSColor.systemRed
+                        key: .backgroundColor,
+                        value: NSColor.systemRed.withAlphaComponent(0.1)
                     ),
             ]),
             HighlightRule(
