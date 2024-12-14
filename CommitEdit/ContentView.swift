@@ -15,7 +15,7 @@ struct ContentView: View {
 
     var body: some View {
         VStack {
-            if !showWelcomeView {
+            if showWelcomeView {
                 WelcomeView()
             } else {
                 EditorView(
