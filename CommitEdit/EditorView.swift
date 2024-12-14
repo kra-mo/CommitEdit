@@ -48,6 +48,72 @@ struct EditorView: View {
             ]),
             HighlightRule(
                 pattern: try! NSRegularExpression(
+                    pattern: #"^#\tnew file: .*"#,
+                    options: [.anchorsMatchLines]
+                ),
+                formattingRules: [
+                    TextFormattingRule(
+                        key: .backgroundColor,
+                        value: NSColor.systemGreen.withAlphaComponent(0.1)
+                    ),
+            ]),
+            HighlightRule(
+                pattern: try! NSRegularExpression(
+                    pattern: #"^#\tmodified: .*"#,
+                    options: [.anchorsMatchLines]
+                ),
+                formattingRules: [
+                    TextFormattingRule(
+                        key: .backgroundColor,
+                        value: NSColor.systemYellow.withAlphaComponent(0.1)
+                    ),
+            ]),
+            HighlightRule(
+                pattern: try! NSRegularExpression(
+                    pattern: #"^#\trenamed: .*"#,
+                    options: [.anchorsMatchLines]
+                ),
+                formattingRules: [
+                    TextFormattingRule(
+                        key: .backgroundColor,
+                        value: NSColor.systemYellow.withAlphaComponent(0.1)
+                    ),
+            ]),
+            HighlightRule(
+                pattern: try! NSRegularExpression(
+                    pattern: #"^#\ttypechange: .*"#,
+                    options: [.anchorsMatchLines]
+                ),
+                formattingRules: [
+                    TextFormattingRule(
+                        key: .backgroundColor,
+                        value: NSColor.systemYellow.withAlphaComponent(0.1)
+                    ),
+            ]),
+            HighlightRule(
+                pattern: try! NSRegularExpression(
+                    pattern: #"^#\tcopied: .*"#,
+                    options: [.anchorsMatchLines]
+                ),
+                formattingRules: [
+                    TextFormattingRule(
+                        key: .backgroundColor,
+                        value: NSColor.systemBlue.withAlphaComponent(0.1)
+                    ),
+            ]),
+            HighlightRule(
+                pattern: try! NSRegularExpression(
+                    pattern: #"^#\tdeleted: .*"#,
+                    options: [.anchorsMatchLines]
+                ),
+                formattingRules: [
+                    TextFormattingRule(
+                        key: .backgroundColor,
+                        value: NSColor.systemRed.withAlphaComponent(0.1)
+                    ),
+            ]),
+            HighlightRule(
+                pattern: try! NSRegularExpression(
                     pattern: #"^\+(.*)"#,
                     options: [.anchorsMatchLines]
                 ),
