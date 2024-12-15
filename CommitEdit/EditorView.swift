@@ -21,17 +21,32 @@ struct EditorView: View {
     private let messageLength = 50.0
     private let descLength = 72.0
     private let horizontalPadding = 20.0
+
     static private let scissors = "# ------------------------ >8 ------------------------"
     static private let font = NSFont.monospacedSystemFont(
         ofSize: NSFont.systemFontSize + 1,
         weight: .regular
     )
 
+    static private let dimRed    = NSColor.systemRed.withAlphaComponent(0.1)
+    static private let dimGreen  = NSColor.systemGreen.withAlphaComponent(0.1)
+    static private let dimBlue   = NSColor.systemBlue.withAlphaComponent(0.1)
+    static private let dimYellow = NSColor.systemYellow.withAlphaComponent(0.1)
+
+    static private func tintedRule (pattern: String, color: NSColor) -> HighlightRule {
+        return HighlightRule(
+            pattern: try! NSRegularExpression(
+                pattern: pattern,
+                options: [.anchorsMatchLines]
+            ),
+            formattingRules: [
+                TextFormattingRule(key: .backgroundColor, value: color)
+            ])
+    }
+
     private let rules: [HighlightRule] = [
             HighlightRule(
-                pattern: try! NSRegularExpression(
-                    pattern: #".*"#
-                ),
+                pattern: try! NSRegularExpression(pattern: #".*"#),
                 formattingRules: [
                     TextFormattingRule(key: .font, value: font),
             ]),
@@ -43,97 +58,9 @@ struct EditorView: View {
                 formattingRules: [
                     TextFormattingRule(
                         key: .foregroundColor,
-                        value: NSColor.secondaryLabelColor
-                    ),
-            ]),
-            HighlightRule(
-                pattern: try! NSRegularExpression(
-                    pattern: #"^#\tnew file: .*"#,
-                    options: [.anchorsMatchLines]
-                ),
-                formattingRules: [
-                    TextFormattingRule(
-                        key: .backgroundColor,
-                        value: NSColor.systemGreen.withAlphaComponent(0.1)
-                    ),
-            ]),
-            HighlightRule(
-                pattern: try! NSRegularExpression(
-                    pattern: #"^#\tmodified: .*"#,
-                    options: [.anchorsMatchLines]
-                ),
-                formattingRules: [
-                    TextFormattingRule(
-                        key: .backgroundColor,
-                        value: NSColor.systemYellow.withAlphaComponent(0.1)
-                    ),
-            ]),
-            HighlightRule(
-                pattern: try! NSRegularExpression(
-                    pattern: #"^#\trenamed: .*"#,
-                    options: [.anchorsMatchLines]
-                ),
-                formattingRules: [
-                    TextFormattingRule(
-                        key: .backgroundColor,
-                        value: NSColor.systemYellow.withAlphaComponent(0.1)
-                    ),
-            ]),
-            HighlightRule(
-                pattern: try! NSRegularExpression(
-                    pattern: #"^#\ttypechange: .*"#,
-                    options: [.anchorsMatchLines]
-                ),
-                formattingRules: [
-                    TextFormattingRule(
-                        key: .backgroundColor,
-                        value: NSColor.systemYellow.withAlphaComponent(0.1)
-                    ),
-            ]),
-            HighlightRule(
-                pattern: try! NSRegularExpression(
-                    pattern: #"^#\tcopied: .*"#,
-                    options: [.anchorsMatchLines]
-                ),
-                formattingRules: [
-                    TextFormattingRule(
-                        key: .backgroundColor,
-                        value: NSColor.systemBlue.withAlphaComponent(0.1)
-                    ),
-            ]),
-            HighlightRule(
-                pattern: try! NSRegularExpression(
-                    pattern: #"^#\tdeleted: .*"#,
-                    options: [.anchorsMatchLines]
-                ),
-                formattingRules: [
-                    TextFormattingRule(
-                        key: .backgroundColor,
-                        value: NSColor.systemRed.withAlphaComponent(0.1)
-                    ),
-            ]),
-            HighlightRule(
-                pattern: try! NSRegularExpression(
-                    pattern: #"^\+(.*)"#,
-                    options: [.anchorsMatchLines]
-                ),
-                formattingRules: [
-                    TextFormattingRule(
-                        key: .backgroundColor,
-                        value: NSColor.systemGreen.withAlphaComponent(0.1)
-                    ),
-            ]),
-            HighlightRule(
-                pattern: try! NSRegularExpression(
-                    pattern: #"^\-(.*)"#,
-                    options: [.anchorsMatchLines]
-                ),
-                formattingRules: [
-                    TextFormattingRule(
-                        key: .backgroundColor,
-                        value: NSColor.systemRed.withAlphaComponent(0.1)
-                    ),
-            ]),
+                        value: NSColor.secondaryLabelColor),
+                ]
+            ),
             HighlightRule(
                 pattern: try! NSRegularExpression(
                     pattern: #"^@@.*@@"#,
@@ -146,6 +73,15 @@ struct EditorView: View {
                         value: NSColor.systemBlue
                     )
             ]),
+            tintedRule(pattern: #"^#\tnew file: .*"#,   color: dimGreen),
+            tintedRule(pattern: #"^#\tmodified: .*"#,   color: dimYellow),
+            tintedRule(pattern: #"^#\trenamed: .*"#,    color: dimYellow),
+            tintedRule(pattern: #"^#\ttypechange: .*"#, color: dimYellow),
+            tintedRule(pattern: #"^#\tcopied: .*"#,     color: dimBlue),
+            tintedRule(pattern: #"^#\tdeleted: .*"#,    color: dimRed),
+            tintedRule(pattern: #"^\+(.*)"#,            color: dimGreen),
+            tintedRule(pattern: #"^\-(.*)"#,            color: dimRed),
+            tintedRule(pattern: #"^#\tmodified: .*"#,   color: dimYellow),
         ]
 
     private func currentMessageLength() -> Int {
