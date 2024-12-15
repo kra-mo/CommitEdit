@@ -8,6 +8,8 @@
 
 import SwiftUI
 
+import HighlightedTextEditor
+
 struct EditorView: View {
     @Binding var text: String
     let onCommit: () -> Void
@@ -16,15 +18,78 @@ struct EditorView: View {
     @State private var tooLong: Bool = false
     @State private var showLengthTip: Bool = false
 
-    let messageLength = 50.0
-    let descLength = 72.0
-    let horizontalPadding = 20.0
-    let fontSize = NSFont.systemFontSize + 1
+    private let messageLength = 50.0
+    private let descLength = 72.0
+    private let horizontalPadding = 20.0
+
+    static private let scissors = "# ------------------------ >8 ------------------------"
+    static private let font = NSFont.monospacedSystemFont(
+        ofSize: NSFont.systemFontSize + 1,
+        weight: .regular
+    )
+
+    static private let dimRed    = NSColor.systemRed.withAlphaComponent(0.1)
+    static private let dimGreen  = NSColor.systemGreen.withAlphaComponent(0.1)
+    static private let dimBlue   = NSColor.systemBlue.withAlphaComponent(0.1)
+    static private let dimYellow = NSColor.systemYellow.withAlphaComponent(0.1)
+
+    static private func tintedRule (pattern: String, color: NSColor) -> HighlightRule {
+        return HighlightRule(
+            pattern: try! NSRegularExpression(
+                pattern: pattern,
+                options: [.anchorsMatchLines]
+            ),
+            formattingRules: [
+                TextFormattingRule(key: .backgroundColor, value: color)
+            ])
+    }
+
+    private let rules: [HighlightRule] = [
+            HighlightRule(
+                pattern: try! NSRegularExpression(pattern: #".*"#),
+                formattingRules: [
+                    TextFormattingRule(key: .font, value: font),
+            ]),
+            HighlightRule(
+                pattern: try! NSRegularExpression(
+                    pattern: #"^#.*"#,
+                    options: [.anchorsMatchLines]
+                ),
+                formattingRules: [
+                    TextFormattingRule(
+                        key: .foregroundColor,
+                        value: NSColor.secondaryLabelColor),
+                ]
+            ),
+            HighlightRule(
+                pattern: try! NSRegularExpression(
+                    pattern: #"^@@.*@@"#,
+                    options: [.anchorsMatchLines]
+                ),
+                formattingRules: [
+                    TextFormattingRule(fontTraits: [.italic]),
+                    TextFormattingRule(
+                        key: .foregroundColor,
+                        value: NSColor.systemBlue
+                    )
+            ]),
+            tintedRule(pattern: #"^#\tnew file: .*"#,   color: dimGreen),
+            tintedRule(pattern: #"^#\tmodified: .*"#,   color: dimYellow),
+            tintedRule(pattern: #"^#\trenamed: .*"#,    color: dimYellow),
+            tintedRule(pattern: #"^#\ttypechange: .*"#, color: dimYellow),
+            tintedRule(pattern: #"^#\tcopied: .*"#,     color: dimBlue),
+            tintedRule(pattern: #"^#\tdeleted: .*"#,    color: dimRed),
+            tintedRule(pattern: #"^\+(.*)"#,            color: dimGreen),
+            tintedRule(pattern: #"^\-(.*)"#,            color: dimRed),
+            tintedRule(pattern: #"^#\tmodified: .*"#,   color: dimYellow),
+        ]
 
     private func currentMessageLength() -> Int {
-        if let message = text.split(separator: "\n").first(where: {
-            !$0.trimmingCharacters(in: .whitespaces).hasPrefix("#")
-        }) { return message.count } else { return 0 }
+        if let message = text.split(separator: "\n")
+            .prefix(while: { $0.trimmingCharacters(in: .whitespaces) != EditorView.scissors })
+            .first(where: {!$0.trimmingCharacters(in: .whitespaces).hasPrefix("#")}) {
+            return message.count
+        } else { return 0 }
     }
 
     var body: some View {
@@ -33,29 +98,20 @@ struct EditorView: View {
                 .offset(
                     CGSize(
                         width: (" ".size(
-                            withAttributes: [
-                                .font: NSFont.monospacedSystemFont(
-                                    ofSize: fontSize,
-                                    weight: .regular
-                                )
-                            ]
+                            withAttributes: [.font: EditorView.font]
                         ).width * (descLength + 0.5)) + horizontalPadding,
                         height: 0
                     )
                 )
             VStack {
-                TextEditor(text: $text)
+                HighlightedTextEditor(text: $text, highlightRules: rules)
+                    .introspect { editor in
+                        DispatchQueue.main.async {
+                            editor.textView.drawsBackground = false
+                            editor.textView.enclosingScrollView?.drawsBackground = false
+                        }
+                    }
                     .padding(.top, -5)
-                    .font(
-                        .system(
-                            size: fontSize,
-                            weight: .regular,
-                            design: .monospaced
-                        )
-                    )
-                    .foregroundStyle(.foreground.opacity(0.9))
-                    .lineSpacing(3)
-                    .scrollContentBackground(.hidden)
                     .padding(.horizontal, horizontalPadding)
                     .onChange(of: text, {
                         withAnimation {
