@@ -1,3 +1,7 @@
+> [!IMPORTANT]
+> Please use [Codeberg](https://codeberg.org/kramo/CommitEdit) for issues and pull requests.
+> The GitHub repository is a [mirror](https://en.wikipedia.org/wiki/Mirror_site).
+
 <div align="center">
   <img src="CommitEdit/Assets.xcassets/AppIcon.appiconset/5.png" width="128" height=“128” />
 
@@ -10,7 +14,7 @@
 
 ## Installation
 
-Download the latest release from [Releases](https://github.com/kra-mo/CommitEdit/releases/latest) and move it into your Applications folder.
+Download the latest release from [Releases](https://codeberg.org/kramo/CommitEdit/releases/latest) and move it into your Applications folder.
 
 The app is not signed as I have not been able to pay the $99 fee for a developer license. As such, you will need to go to System Settings → Privacy & Security → Security and open the app from there.
 
