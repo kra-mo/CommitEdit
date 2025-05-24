@@ -142,7 +142,7 @@ struct WelcomeView: View {
                     Text("View Options"),
                     action: {
                         openURL(URL(
-                            string: "https://github.com/kra-mo/CommitEdit#donations"
+                            string: "https://git.kramo.page/CommitEdit#donations"
                         )!)
                     }
                 ),
