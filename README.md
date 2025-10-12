@@ -3,7 +3,7 @@
 > The GitHub repository is a [mirror](https://en.wikipedia.org/wiki/Mirror_site).
 
 <div align="center">
-  <img src="CommitEdit/Assets.xcassets/AppIcon.appiconset/5.png" width="128" height=“128” />
+  <img src="Icon.webp" width="128" height=“128” />
 
   # CommitEdit
 
