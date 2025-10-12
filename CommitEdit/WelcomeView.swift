@@ -129,7 +129,7 @@ struct WelcomeView: View {
             .opacity(closeButtonOpacity)
             .buttonStyle(.borderless)
             .labelStyle(.iconOnly)
-            .position(x: 17, y: 17)
+            .position(x: 25, y: 25)
         }
         .containerBackground(.ultraThickMaterial, for: .window)
         .ignoresSafeArea()

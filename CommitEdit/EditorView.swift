@@ -43,35 +43,36 @@ struct EditorView: View {
                         height: 0
                     )
                 )
-            VStack {
-                TextEditor(text: $text)
-                    .padding(.top, -5)
-                    .font(
-                        .system(
-                            size: fontSize,
-                            weight: .regular,
-                            design: .monospaced
-                        )
+
+            TextEditor(text: $text)
+                .font(
+                    .system(
+                        size: fontSize,
+                        weight: .regular,
+                        design: .monospaced
                     )
-                    .foregroundStyle(.foreground.opacity(0.9))
-                    .lineSpacing(3)
-                    .scrollContentBackground(.hidden)
-                    .padding(.horizontal, horizontalPadding)
-                    .onChange(of: text, {
-                        withAnimation {
-                            tooLong = currentMessageLength() > Int(messageLength)
-                        }
-                    })
-                HStack {
-                    if tooLong {
-                        Button(
-                            "Message longer than \(Int(messageLength)) characters",
-                            systemImage: "questionmark.circle"
-                        ) {
-                            showLengthTip = true
-                        }
-                        .buttonStyle(.borderless)
-                        .padding(.horizontal)
+                )
+                .foregroundStyle(.foreground.opacity(0.9))
+                .lineSpacing(3)
+                .scrollContentBackground(.hidden)
+                .padding(.horizontal, horizontalPadding)
+                .onChange(of: text, {
+                    withAnimation {
+                        tooLong = currentMessageLength() > Int(messageLength)
+                    }
+                })
+        }
+        .containerBackground(.ultraThickMaterial, for: .window)
+        .ignoresSafeArea(.all)
+        .frame(minWidth: 440, minHeight: 80)
+        .toolbar {
+            ToolbarSpacer(.flexible)
+            if tooLong {
+                ToolbarItem {
+                    Button(
+                        "Message longer than \(Int(messageLength)) characters",
+                        systemImage: "info"
+                    ) { showLengthTip = true }
                         .popover(isPresented: $showLengthTip, arrowEdge: .leading) {
                             Text(
                                 "Keeping your commit messages concise is recommended for readability.\n\nThe summary should usually be no greater than 50, and lines of the description no greater than 72 characters long as indicated by the margin on the right."
@@ -79,30 +80,18 @@ struct EditorView: View {
                             .frame(width: 480)
                             .padding()
                         }
-                        .padding(.bottom)
-                    }
-                    Spacer()
-                    HStack {
-                        Button("Abort", action: onAbort)
-                        Button(
-                            "Commit",
-                            systemImage:
-                                "point.topright.arrow.triangle.backward.to.point.bottomleft.scurvepath.fill",
-                            action: onCommit
-                        )
-                        .keyboardShortcut("s")
-                        .buttonStyle(.borderedProminent)
-                        .labelStyle(.titleAndIcon)
-                    }
-                    .padding(.horizontal, 8)
-                    .padding(.bottom, 8)
                 }
-                .controlSize(.large)
+                ToolbarSpacer(.fixed)
+            }
+            ToolbarItem {
+                Button("Abort", systemImage: "xmark", action: onAbort)
+            }
+            ToolbarItem {
+                Button("Commit", systemImage: "checkmark", action: onCommit)
+                    .keyboardShortcut("s")
+                    .buttonStyle(.borderedProminent)
             }
         }
-        .containerBackground(.ultraThickMaterial, for: .window)
-        .ignoresSafeArea(.all)
-        .frame(minWidth: 440, minHeight: 80)
     }
 }
 

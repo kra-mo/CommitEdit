@@ -1,0 +1,53 @@
+{
+  "fill" : {
+    "linear-gradient" : [
+      "display-p3:0.34510,0.74118,0.96471,1.00000",
+      "srgb:0.20784,0.42745,0.94902,1.00000"
+    ]
+  },
+  "groups" : [
+    {
+      "blur-material" : null,
+      "layers" : [
+        {
+          "image-name" : "Pen.png",
+          "name" : "Pen",
+          "position" : {
+            "scale" : 0.25,
+            "translation-in-points" : [
+              0,
+              0
+            ]
+          }
+        },
+        {
+          "glass" : false,
+          "image-name" : "Commit Message.svg",
+          "name" : "Commit Message",
+          "opacity" : 0.5,
+          "position" : {
+            "scale" : 1.25,
+            "translation-in-points" : [
+              -50,
+              0
+            ]
+          }
+        }
+      ],
+      "shadow" : {
+        "kind" : "layer-color",
+        "opacity" : 0.5
+      },
+      "translucency" : {
+        "enabled" : true,
+        "value" : 0.25
+      }
+    }
+  ],
+  "supported-platforms" : {
+    "circles" : [
+      "watchOS"
+    ],
+    "squares" : "shared"
+  }
+}
